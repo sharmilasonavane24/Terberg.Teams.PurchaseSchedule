@@ -1,0 +1,26 @@
+﻿body {
+}
+.column {
+    float: left;
+    padding:10px;
+    margin-left: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    margin-left: 10px;
+}
+.top-container {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.icon-show{
+    float:right;
+}
+td {
+    padding-right: 10px;
+}
