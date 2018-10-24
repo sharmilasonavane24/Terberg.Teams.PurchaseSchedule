@@ -13,8 +13,6 @@ const initialState = {
 export const actionCreators = {
     requestSuppliers: () => async (dispatch) => {
         dispatch({ type: requestSuppliersType });
-       // var result = JSON.parse('[{ "id":"1", "name":"SupplierName1" },{ "id":"2", "name":"SupplierName2" },{ "id":"3", "name":"SupplierName3" }]');
-       // dispatch({ type: receiveSuppliersType, result });
         const url = "api/purchaseschedule/suppliers";
         try {
             const response = await fetch(url, {

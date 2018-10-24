@@ -7,6 +7,6 @@ namespace Terberg.Teams.PurchaseSchedule.Web.Helpers
 {
    public interface ISupplier
     {
-        IEnumerable<SupplierDto> GetSuppliers();
+        Task<IEnumerable<Supplier>> GetSuppliers();
     }
 }

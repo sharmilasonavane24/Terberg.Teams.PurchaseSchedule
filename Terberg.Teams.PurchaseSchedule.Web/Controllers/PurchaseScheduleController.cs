@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Terberg.Teams.PurchaseSchedule.Web.Helpers;
 
 namespace Terberg.Teams.PurchaseSchedule.Web.Controllers
@@ -14,9 +15,9 @@ namespace Terberg.Teams.PurchaseSchedule.Web.Controllers
             _supplier = supplier ?? throw new ArgumentNullException(nameof(supplier));
         }
         [HttpGet("[action]")]
-        public IEnumerable<SupplierDto> Suppliers()
+        public async Task<IEnumerable<Supplier>> Suppliers()
         {
-            return _supplier.GetSuppliers();
+            return await _supplier.GetSuppliers();
         }
     }
 }
