@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Terberg.Teams.PurchaseSchedule.Web.Helpers
 {
-    public interface ISupplier
+    public interface ICompany
     {
-        Task<IEnumerable<Supplier>> GetSuppliers();
+        Task<IEnumerable<Company>> GetCompanies();
     }
 }

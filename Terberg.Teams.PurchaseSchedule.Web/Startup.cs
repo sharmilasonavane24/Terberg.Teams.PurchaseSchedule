@@ -28,6 +28,9 @@ namespace Terberg.Teams.PurchaseSchedule.Web
                 configuration.RootPath = "ClientApp/build";
             });
             services.AddTransient<ISupplier, Supplier_Dev>();
+            services.AddTransient<ICompany, Company_Dev>();
+            services.AddTransient<IBuyer, Buyer_Dev>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

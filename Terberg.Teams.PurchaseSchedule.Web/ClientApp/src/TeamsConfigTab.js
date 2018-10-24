@@ -2,8 +2,9 @@
 import { connectTeamsComponent, Panel, PanelBody, Input } from 'msteams-ui-components-react';
 import BuyerDropDown from './components/BuyerDropDown';
 import SupplierDropDown from './components/SupplierDropDown';
-import WorkspaceDropDown from './components/WorkspaceDropDown';
-import { inTeams, getQueryVariable } from './Utils';
+import CompanyDropDown from './components/CompanyDropDown';
+import { inTeams, getQueryVariable, alertTypeEnum, errorData } from './Utils';
+import { loadUserData } from './AdalConfig';
 import microsoftTeams from '@microsoft/teams-js';
 
 const uuidv4 = require('uuid/v4');
@@ -24,15 +25,23 @@ class TeamsConfigTabInner extends React.Component {
                 name: '',
                 id: ''
             },
+            selectedCompany: {
+                name: '',
+                companycode: ''
+            },
             tabDetails: {
                 name: '',
                 id: '',
                 isHidden: false
-            }
+            },
+            isAuthError: false,
+            authError: errorData,
+            isLoggedIn: false
         };
         this.handleBuyerSelected = this.handleBuyerSelected.bind(this);
         this.handleSupplierSelected = this.handleSupplierSelected.bind(this);
         this.handleWorkspaceSelected = this.handleWorkspaceSelected.bind(this);
+        this.handleCompanySelected = this.handleCompanySelected.bind(this);
         this.onTabNameChanged = this.onTabNameChanged.bind(this);
 
         if (inTeams()) {
@@ -79,13 +88,36 @@ class TeamsConfigTabInner extends React.Component {
 
          
     }
-   
+    componentDidMount() {
+       
+        //if (inTeams()) {
+        //    let loginHint = getQueryVariable('loginHint');
+        //    loadUserData(loginHint, (error, idToken) => {
+        //        if (idToken === null || idToken === 'undefined') {
+        //            this.setSstate({
+        //                isAuthError: true,
+        //                authError: {
+        //                    type: alertTypeEnum.error,
+        //                    message: error
+        //                },
+        //                isLoggedIn: false
+        //            });
+        //        } else {
+        //            this.setState({
+        //                isAuthError: false,
+        //                isLoggedIn: true
+        //            });
+
+        //        }
+        //    });
+        //}
+    }
     componentDidUpdate() {
        
         if (inTeams()) {
             if (this.state.selectedBuyer.id
                 && this.state.selectedSupplier.id
-                && this.state.selectedWorkspace.id
+                && this.state.selectedCompany.companycode
                 && this.state.tabDetails.id) {
                 microsoftTeams.settings.setValidityState(true);
                 microsoftTeams.settings.setSettings({
@@ -145,6 +177,18 @@ class TeamsConfigTabInner extends React.Component {
         }
     }
 
+    handleCompanySelected(e, company) {
+        if (company !== this.state.selectedCompany) {
+            this.setState(
+                {
+                    selectedCompany: {
+                        name: company.name ? company.name : company.companycode,
+                        companycode: company.companycode
+                    }
+                });
+        }
+    }
+
     render() {
        
         const { context } = this.props;
@@ -176,7 +220,7 @@ class TeamsConfigTabInner extends React.Component {
                             className={this.state.tabDetails.isHidden ? 'hidden' : ''}
                         />
                     </span>
-                    <WorkspaceDropDown onClick={this.handleWorkspaceSelected} workspace={this.state.selectedWorkspace} />
+                    <CompanyDropDown onClick={this.handleCompanySelected} company={this.state.selectedCompany} />
                     <BuyerDropDown onClick={this.handleBuyerSelected} buyer={this.state.selectedBuyer} />
                     <SupplierDropDown onClick={this.handleSupplierSelected} supplier={this.state.selectedSupplier} />
 

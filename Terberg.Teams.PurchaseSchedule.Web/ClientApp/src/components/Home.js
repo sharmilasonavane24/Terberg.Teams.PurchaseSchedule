@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { inTeams, getQueryVariable } from '../Utils';
 import microsoftTeams from '@microsoft/teams-js';
-import { Toggle, IconButton, connectTeamsComponent, Table, TBody, Td, Tr, PrimaryButton, Dropdown, PanelBody, Panel } from 'msteams-ui-components-react';
+import { Toggle, IconButton, connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
 import { MSTeamsIconWeight, MSTeamsIconType } from 'msteams-ui-icons-react';
 import './Home.css';
 

@@ -1,5 +1,11 @@
 ﻿import { ThemeStyle } from 'msteams-ui-components-react';
 
+export var alertTypeEnum = Object.freeze({ "info": 0, "success": 1, "warning": 2, "error": 3 });
+
+export const errorData = {
+    message: '',
+    type: alertTypeEnum.info
+};
 
 export function setTheme(themeStr) {
     let theme;

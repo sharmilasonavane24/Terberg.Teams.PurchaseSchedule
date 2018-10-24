@@ -1,18 +1,18 @@
-﻿const requestSuppliersType = 'REQUEST_SUPPLIERS';
-const receiveSuppliersType = 'RECEIVE_SUPPLIERS';
-const requestSuppliersError = 'REQUEST_SUPPLIERS_ERROR';
+﻿const requestCompaniesType = 'REQUEST_COMPANIES';
+const receiveCompaniesType = 'RECEIVE_COMPANIES';
+const requestCompaniesError = 'REQUEST_COMPANIES_ERROR';
 
 const initialState = {
-    suppliers: [],
+    companies: [],
     isLoading: false,
     isError: false,
     errorMessage:''
 };
 
 export const actionCreators = {
-    requestSuppliers: () => async (dispatch) => {
-        dispatch({ type: requestSuppliersType });
-        const url = "api/purchaseschedule/suppliers";
+    requestCompanies: () => async (dispatch) => {
+        dispatch({ type: requestCompaniesType });
+        const url = "api/purchaseschedule/companies";
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -21,27 +21,27 @@ export const actionCreators = {
             if (response.ok) {
                 response.json()
                     .then(result => {
-                        dispatch({ type: receiveSuppliersType, result });
+                        dispatch({ type: receiveCompaniesType, result });
                     })
                     .catch((err) => {
-                        var errorMessage = "No supplier found. " + err.message
-                        dispatch({ type: requestSuppliersError,errorMessage });
+                        var errorMessage = "No companies found. " + err.message
+                        dispatch({ type: requestCompaniesError,errorMessage });
                     });
             } else {
                 response.json()
                     .then(result => {
                         var errorMessage = result.message;
-                        dispatch({ type: requestSuppliersError, errorMessage });
+                        dispatch({ type: requestCompaniesError, errorMessage });
                     })
                     .catch(err => {
-                        var errorMessage = "No supplier found. " + err.message
-                        dispatch({ type: requestSuppliersError, errorMessage });
+                        var errorMessage = "No companies found. " + err.message
+                        dispatch({ type: requestCompaniesError, errorMessage });
                     });
             }
         }
         catch (err) {
-            var errorMessage = "No supplier found. " + err.message
-            dispatch({ type: requestSuppliersError, errorMessage });
+            var errorMessage = "No companies found. " + err.message
+            dispatch({ type: requestCompaniesError, errorMessage });
         }
     }
 };
@@ -50,22 +50,22 @@ export const reducer = (state, action) => {
     state = state || initialState;
 
     switch (action.type) {
-        case requestSuppliersType:
+        case requestCompaniesType:
             return {
                 ...state,
                 isLoading: true,
                 isError: false
             };
 
-        case receiveSuppliersType:
+        case receiveCompaniesType:
             return {
                 ...state,
-                suppliers: action.result,
+                companies: action.result,
                 isLoading: false,
                 isError: false
             };
 
-        case requestSuppliersError:
+        case requestCompaniesError:
             return {
                 ...state,
                 errorMessage: action.errorMessage,
