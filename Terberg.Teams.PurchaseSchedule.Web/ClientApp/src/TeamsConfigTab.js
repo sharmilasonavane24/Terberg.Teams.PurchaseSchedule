@@ -89,7 +89,6 @@ class TeamsConfigTabInner extends React.Component {
          
     }
     componentDidMount() {
-       
         //if (inTeams()) {
         //    let loginHint = getQueryVariable('loginHint');
         //    loadUserData(loginHint, (error, idToken) => {
