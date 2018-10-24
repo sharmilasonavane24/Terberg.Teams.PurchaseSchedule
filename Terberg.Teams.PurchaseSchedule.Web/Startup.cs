@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Terberg.Teams.PurchaseSchedule.Web.Helpers;
 
 namespace Terberg.Teams.PurchaseSchedule.Web
 {
@@ -26,6 +27,7 @@ namespace Terberg.Teams.PurchaseSchedule.Web
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddTransient<ISupplier, Supplier_Dev>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +58,7 @@ namespace Terberg.Teams.PurchaseSchedule.Web
 
                 if (env.IsDevelopment())
                 {
-                    // spa.UseReactDevelopmentServer(npmScript: "start");
+                   //  spa.UseReactDevelopmentServer(npmScript: "start");
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000/");
                 }
             });

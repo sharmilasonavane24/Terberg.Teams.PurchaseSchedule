@@ -6,14 +6,47 @@ const initialState = {
     suppliers: [],
     supplierId: '',
     isLoading: false,
-    isError: false
+    isError: false,
+    errorMessage:''
 };
 
 export const actionCreators = {
     requestSuppliers: () => async (dispatch) => {
         dispatch({ type: requestSuppliersType });
-        var result = JSON.parse('[{ "id":"1", "name":"SupplierName1" },{ "id":"2", "name":"SupplierName2" },{ "id":"3", "name":"SupplierName3" }]');
-        dispatch({ type: receiveSuppliersType, result });
+       // var result = JSON.parse('[{ "id":"1", "name":"SupplierName1" },{ "id":"2", "name":"SupplierName2" },{ "id":"3", "name":"SupplierName3" }]');
+       // dispatch({ type: receiveSuppliersType, result });
+        const url = "api/purchaseschedule/suppliers";
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log(response);
+            if (response.ok) {
+                response.json()
+                    .then(result => {
+                        dispatch({ type: receiveSuppliersType, result });
+                    })
+                    .catch((err) => {
+                        var errorMessage = "No suppliers found. " + err.message
+                        dispatch({ type: requestSuppliersError,errorMessage });
+                    });
+            } else {
+                response.json()
+                    .then(result => {
+                        var errorMessage = result.message;
+                        dispatch({ type: requestSuppliersError, errorMessage });
+                    })
+                    .catch(err => {
+                        var errorMessage = "No suppliers found. " + err.message
+                        dispatch({ type: requestSuppliersError, errorMessage });
+                    });
+            }
+        }
+        catch (err) {
+            var errorMessage = "No suppliers found. " + err.message
+            dispatch({ type: requestSuppliersError, errorMessage });
+        }
     }
 };
 
@@ -39,7 +72,7 @@ export const reducer = (state, action) => {
         case requestSuppliersError:
             return {
                 ...state,
-
+                errorMessage: action.errorMessage,
                 isLoading: false,
                 isError: true
             };
