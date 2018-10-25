@@ -56,9 +56,11 @@ class TeamsConfigTabInner extends React.Component {
                     tabName: this.state.tabDetails.name,
                     contentUrl: host + "/home/?theme={theme}&loginHint={loginHint}&entityId={entityId}"
                         + "&suppliername=" + this.state.selectedSupplier.name
-                        + "&supplierid" + this.state.selectedSupplier.id
+                        + "&supplierid=" + this.state.selectedSupplier.id
                         + "&buyername=" + this.state.selectedBuyer.name
-                        + "&buyerid" + this.state.selectedBuyer.id
+                        + "&buyerid=" + this.state.selectedBuyer.id
+                        + "&companyname=" + this.state.selectedCompany.name
+                        + "&companycode=" + this.state.selectedCompany.companycode
                     ,
                     suggestedDisplayName: this.state.tabDetails.name,
                     supplier: this.state.selectedSupplier,
@@ -91,6 +93,7 @@ class TeamsConfigTabInner extends React.Component {
     componentDidMount() {
         //if (inTeams()) {
         //    let loginHint = getQueryVariable('loginHint');
+        //    console.log(loginHint);
         //    loadUserData(loginHint, (error, idToken) => {
         //        if (idToken === null || idToken === 'undefined') {
         //            this.setSstate({

@@ -11,13 +11,14 @@ namespace Terberg.Teams.PurchaseSchedule.Web.Controllers
     {
         private readonly ISupplier _supplier;
         private readonly IBuyer _buyer;
-
+        private readonly IReport _report;
         private readonly ICompany _company;
-        public PurchaseScheduleController(ISupplier supplier, ICompany company, IBuyer buyer)
+        public PurchaseScheduleController(ISupplier supplier, ICompany company, IBuyer buyer, IReport report)
         {
             _supplier = supplier ?? throw new ArgumentNullException(nameof(supplier));
             _company = company ?? throw new ArgumentNullException(nameof(company));
             _buyer = buyer ?? throw new ArgumentNullException(nameof(buyer));
+            _report = report ?? throw new ArgumentNullException(nameof(report));
         }
         [HttpGet("[action]")]
         public async Task<IEnumerable<Supplier>> Suppliers()
@@ -33,6 +34,13 @@ namespace Terberg.Teams.PurchaseSchedule.Web.Controllers
         public async Task<IEnumerable<Buyer>> Buyers()
         {
             return await _buyer.GetBuyers();
+        }
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Report>> Reports(string companycode,
+            string supplierid, string buyerid, bool isPurchaseOrder,
+            bool isPlannedOrder,bool isForecastSale,bool isForecastLongTerm)
+        {
+            return await _report.GetReports();
         }
     }
 }

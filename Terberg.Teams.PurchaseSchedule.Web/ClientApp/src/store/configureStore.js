@@ -5,13 +5,15 @@ import * as Buyer from './Buyer';
 import * as Supplier from './Supplier';
 import * as Workspace from './Workspace';
 import * as Company from './Company';
+import * as Report from './Report';
 
 export default function configureStore(history, initialState) {
   const reducers = {
       buyers: Buyer.reducer,
       suppliers: Supplier.reducer,
       workspaces: Workspace.reducer,
-      companies: Company.reducer
+      companies: Company.reducer,
+      reports: Report.reducer
   };
 
   const middleware = [

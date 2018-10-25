@@ -18,7 +18,7 @@ class SupplierDropDownInner extends React.Component {
                     autoFocus
                     mainButtonText={this.props.supplier.id ?
                         this.props.supplier.name :
-                        "Please select a Supplier..."}
+                        "Select a Supplier..."}
                     style={{ width: '100%' }}
                     items={
                         this.props.suppliers.map(supplier => {

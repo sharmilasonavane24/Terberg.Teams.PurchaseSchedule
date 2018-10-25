@@ -2,7 +2,7 @@
 
 export const config = {
    
-    clientId: 'cd60362c-bbba-42d9-b687-16d1d8e842d4',
+    clientId: '91fb61c3-76a6-4e3f-a323-a67271b7ee94',
     redirectUri: window.location.origin + "/tab-auth/silent-end",
     cacheLocation: "localStorage",
     navigateToLoginRequestUrl: false
@@ -35,6 +35,7 @@ export function loadUserData(loginHint, callback) {
     console.log("authContext: "+ JSON.stringify( authContext));
     // See if there's a cached user and it matches the expected user
     let user = authContext.getCachedUser();
+    console.log("USESR: " + JSON.stringify(user));
     if (user) {
         if (user.userName !== loginHint) {
             // User doesn't match, clear the cache

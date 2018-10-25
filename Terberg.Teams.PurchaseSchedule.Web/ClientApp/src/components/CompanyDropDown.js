@@ -18,7 +18,7 @@ class CompanyDropDownInner extends React.Component {
                     autoFocus
                     mainButtonText={this.props.company.companycode ?
                         this.props.company.name :
-                        "Please select a Company..."}
+                        "Select a Company..."}
                     style={{ width: '100%' }}
                     items={
                         this.props.companies.map(company => {

@@ -1,10 +1,13 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { actionCreators } from '../store/Report';
 import { inTeams, getQueryVariable } from '../Utils';
 import microsoftTeams from '@microsoft/teams-js';
 import { Toggle, IconButton, connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
 import { MSTeamsIconWeight, MSTeamsIconType } from 'msteams-ui-icons-react';
 import './Home.css';
+
 
 class HomeInner extends React.Component {
     constructor(props) {
@@ -16,6 +19,10 @@ class HomeInner extends React.Component {
             isForecastSale: true,
             isForecastLongTerm: true,
             innerHeight: window.innerHeight,
+            selectedCompany: {
+                name: getQueryVariable('companyname'),
+                companycode: getQueryVariable('companycode')
+            },
             selectedSupplier: {
                 name: getQueryVariable('suppliername'),
                 id: getQueryVariable('supplierid')
@@ -25,12 +32,13 @@ class HomeInner extends React.Component {
                 id: getQueryVariable('buyerid')
             },
         };
+        this.handleApplyClick = this.handleApplyClick.bind(this);
         this.handleShowClick = this.handleShowClick.bind(this);
         this.handlePurchaseOrderToggle = this.handlePurchaseOrderToggle.bind(this);
         this.handlePlannedOrderToggle = this.handlePlannedOrderToggle.bind(this);
         this.handleForecastSaleToggle = this.handleForecastSaleToggle.bind(this);
         this.handleForecastLongTermToggle = this.handleForecastLongTermToggle.bind(this);
-    
+
         if (inTeams()) {
             microsoftTeams.initialize();
             microsoftTeams.settings.getSettings(settings => {
@@ -51,6 +59,23 @@ class HomeInner extends React.Component {
         this.setState({
             show: !this.state.show
         });
+    }
+    handleApplyClick() {
+        console.log(this.state.selectedCompany.companycode);
+        console.log(this.state.selectedSupplier.id);
+        console.log(this.state.selectedBuyer.id);
+        console.log(this.state.isPurchaseOrder);
+        console.log(this.state.isPlannedOrder);
+        console.log(this.state.isForecastSale);
+        console.log(this.state.isForecastLongTerm);
+        this.props.requestReports(
+            this.state.selectedCompany.companycode,
+            this.state.selectedSupplier.id,
+            this.state.selectedBuyer.id,
+            this.state.isPurchaseOrder,
+            this.state.isPlannedOrder,
+            this.state.isForecastSale,
+            this.state.isForecastLongTerm);
     }
     handlePurchaseOrderToggle() {
         this.setState({
@@ -108,17 +133,17 @@ class HomeInner extends React.Component {
                                         <tr>
                                             <td style={styles.header}>Supplier Name:</td>
                                             <td>
-                                                {this.state.selectedSupplier.name}  
+                                                {this.state.selectedSupplier.name}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={styles.header}>Buyer Name: </td>
                                             <td>
-                                                {this.state.selectedBuyer.name}  
+                                                {this.state.selectedBuyer.name}
                                             </td>
                                         </tr>
                                     </table>
-                                    </div>
+                                </div>
                                 <div className="column">
                                     <table>
                                         <tr>
@@ -151,7 +176,7 @@ class HomeInner extends React.Component {
                                 <div className="column">
                                     <PrimaryButton>Send</PrimaryButton>
                                     <br /> <br />
-                                    <PrimaryButton>Apply</PrimaryButton>
+                                    <PrimaryButton onClick={this.handleApplyClick}>Apply</PrimaryButton>
                                 </div>
                             </div>
                         </div>
@@ -163,4 +188,6 @@ class HomeInner extends React.Component {
 }
 const Home = connectTeamsComponent(HomeInner);
 
-export default connect()(Home);
+export default connect(
+    state => state.reports,
+    dispatch => bindActionCreators(actionCreators, dispatch))(Home);

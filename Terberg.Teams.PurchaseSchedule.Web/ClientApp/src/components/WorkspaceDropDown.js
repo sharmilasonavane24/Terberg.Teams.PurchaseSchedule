@@ -18,7 +18,7 @@ class WorkspaceDropDownInner extends React.Component {
                     
                     mainButtonText={this.props.workspace.id ?
                         this.props.workspace.name :
-                        "Please select a Workspace..."}
+                        "Select a Workspace..."}
                     style={{ width: '100%' }}
                     items={
                         this.props.workspaces.map(workspace => {
