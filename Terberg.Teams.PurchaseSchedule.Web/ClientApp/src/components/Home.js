@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../store/Report';
 import { inTeams, getQueryVariable } from '../Utils';
 import FilterBox from './FilterBox';
+import SettingTable from './SettingTable';
+import FilterToggleTable from './FilterToggleTable';
 import microsoftTeams from '@microsoft/teams-js';
-import { Toggle,   connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
+import { connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
 import './Home.css';
 
 
@@ -34,10 +36,7 @@ class HomeInner extends React.Component {
         };
         this.handleApplyClick = this.handleApplyClick.bind(this);
         this.handleIconClick = this.handleIconClick.bind(this);
-        this.handlePurchaseOrderToggle = this.handlePurchaseOrderToggle.bind(this);
-        this.handlePlannedOrderToggle = this.handlePlannedOrderToggle.bind(this);
-        this.handleForecastSaleToggle = this.handleForecastSaleToggle.bind(this);
-        this.handleForecastLongTermToggle = this.handleForecastLongTermToggle.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
 
         if (inTeams()) {
             microsoftTeams.initialize();
@@ -56,13 +55,47 @@ class HomeInner extends React.Component {
         this.setState({ innerHeight: window.innerHeight });
     }
     handleIconClick() {
-         
+
         this.setState({
             isHidden: !this.state.isHidden
         });
     }
+    handleToggle( toggleName) {
+        
+        switch (toggleName) {
+            case 'isPurchaseOrder':
+                this.setState({
+                    isPurchaseOrder: !this.state.isPurchaseOrder
+                });
+                break;
+            case 'isPlannedOrder':
+                this.setState({
+                    isPlannedOrder: !this.state.isPlannedOrder
+                });
+                break;
+            case 'isForecastSale':
+                this.setState({
+                    isForecastSale: !this.state.isForecastSale
+                });
+                break;
+            case 'isForecastLongTerm':
+                this.setState({
+                    isForecastLongTerm: !this.state.isForecastLongTerm
+                });
+                break;
+            default:
+                break;
+        }
+    }
     handleApplyClick() {
-     
+        console.log(this.state.selectedCompany.companycode);
+        console.log(this.state.selectedSupplier.id);
+        console.log(this.state.selectedBuyerGroup.id);
+        console.log(this.state.isPurchaseOrder);
+        console.log(this.state.isPlannedOrder);
+        console.log(this.state.isForecastSale);
+        console.log(this.state.isForecastLongTerm);
+
         this.props.requestReports(
             this.state.selectedCompany.companycode,
             this.state.selectedSupplier.id,
@@ -72,26 +105,7 @@ class HomeInner extends React.Component {
             this.state.isForecastSale,
             this.state.isForecastLongTerm);
     }
-    handlePurchaseOrderToggle() {
-        this.setState({
-            isPurchaseOrder: !this.state.isPurchaseOrder
-        });
-    }
-    handlePlannedOrderToggle() {
-        this.setState({
-            isPlannedOrder: !this.state.isPlannedOrder
-        });
-    }
-    handleForecastSaleToggle() {
-        this.setState({
-            isForecastSale: !this.state.isForecastSale
-        });
-    }
-    handleForecastLongTermToggle() {
-        this.setState({
-            isForecastLongTerm: !this.state.isForecastLongTerm
-        });
-    }
+   
     render() {
         const { context } = this.props;
         const { colors, style, font } = context;
@@ -105,61 +119,27 @@ class HomeInner extends React.Component {
         };
         return (
             <Panel className="rootPanel" style={styles.panel}>
-
                 <PanelBody>
                     <div className="top-container">
-                      
                         <FilterBox onClick={this.handleIconClick} isHidden={this.state.isHidden} />
-
                         <div className={this.state.isHidden ? 'hidden' : ''}>
                             <div className="row">
                                 <div className="column">
-                                    <table>
-                                        <tr>
-                                            <td style={styles.header}>Supplier Name:</td>
-                                            <td>
-                                                {this.state.selectedSupplier.name}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={styles.header}>Buyer Group Name: </td>
-                                            <td>
-                                                {this.state.selectedBuyerGroup.name}
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <SettingTable
+                                        selectedSupplier={this.state.selectedSupplier}
+                                        selectedBuyerGroup={this.state.selectedBuyerGroup}
+                                    />
                                 </div>
                                 <div className="column">
-                                    <table>
-                                        <tr>
-                                            <td style={styles.header}>Purchase orders:   </td>
-                                            <td>
-                                                <Toggle autoFocus label='Purchase orders' checked={this.state.isPurchaseOrder} onToggle={this.handlePurchaseOrderToggle} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={styles.header}> Planned orders:</td>
-                                            <td>
-                                                <Toggle label='Purchase orders' checked={this.state.isPlannedOrder} onToggle={this.handlePlannedOrderToggle} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={styles.header}>Forecast (Sales):</td>
-                                            <td>
-                                                <Toggle label='Purchase orders' checked={this.state.isForecastSale} onToggle={this.handleForecastSaleToggle} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={styles.header}>Forecast (Long Term):</td>
-                                            <td>
-                                                <Toggle label='Purchase orders' checked={this.state.isForecastLongTerm} onToggle={this.handleForecastLongTermToggle} />
-                                            </td>
-                                        </tr>
-
-                                    </table>
+                                    <FilterToggleTable
+                                        isPurchaseOrder={this.state.isPurchaseOrder}
+                                        isPlannedOrder={this.state.isPlannedOrder}
+                                        isForecastSale={this.state.isForecastSale}
+                                        isForecastLongTerm={this.state.isForecastLongTerm}
+                                        onClick={this.handleToggle}
+                                    />
                                 </div>
                                 <div className="column">
-                                  
                                     <PrimaryButton onClick={this.handleApplyClick}>Apply</PrimaryButton>
                                 </div>
                             </div>
