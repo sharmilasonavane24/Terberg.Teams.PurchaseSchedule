@@ -13,7 +13,7 @@ class CompanyDropDownInner extends React.Component {
     render() {
         return (
             <div>
-                <span>{this.props.loading ? 'Loading Companies...' : 'Companies'}</span>
+                <span>{this.props.loading ? 'Loading Companies...' : 'Company'}</span>
                 <Dropdown
                     autoFocus
                     mainButtonText={this.props.company.companycode ?
@@ -35,6 +35,9 @@ class CompanyDropDownInner extends React.Component {
                     }
                     disabled={(this.props.isLoading || this.props.isError)}
                 />
+                <div className={this.props.isError ? '' : 'hidden'}>
+                    {this.props.errorMessage}
+                </div>
             </div>
         );
     }

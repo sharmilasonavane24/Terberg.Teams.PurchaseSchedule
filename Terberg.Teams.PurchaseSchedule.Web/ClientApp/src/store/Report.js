@@ -21,7 +21,7 @@ export const actionCreators = {
             dispatch({ type: requestReportsType });
 
             let params = {
-                     "companycode": companycode,
+                "companycode": companycode,
                 "supplierid": supplierid,
                 "buyerid": buyerid,
                 "isPurchaseOrder": isPurchaseOrder,
@@ -43,6 +43,7 @@ export const actionCreators = {
             if (response.ok) {
                 response.json()
                     .then(result => {
+                        console.log(result);
                         dispatch({ type: receiveReportsType, result });
                     })
                     .catch((err) => {

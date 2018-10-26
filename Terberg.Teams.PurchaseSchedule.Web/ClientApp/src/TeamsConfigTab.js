@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { connectTeamsComponent, Panel, PanelBody, Input } from 'msteams-ui-components-react';
-import BuyerDropDown from './components/BuyerDropDown';
+import BuyerGroupDropDown from './components/BuyerGroupDropDown';
 import SupplierDropDown from './components/SupplierDropDown';
 import CompanyDropDown from './components/CompanyDropDown';
 import { inTeams, getQueryVariable, alertTypeEnum, errorData } from './Utils';
@@ -13,7 +13,7 @@ class TeamsConfigTabInner extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedBuyer: {
+            selectedBuyerGroup: {
                 name: '',
                 id: ''
             },
@@ -38,7 +38,7 @@ class TeamsConfigTabInner extends React.Component {
             authError: errorData,
             isLoggedIn: false
         };
-        this.handleBuyerSelected = this.handleBuyerSelected.bind(this);
+        this.handleBuyerGroupSelected = this.handleBuyerGroupSelected.bind(this);
         this.handleSupplierSelected = this.handleSupplierSelected.bind(this);
         this.handleWorkspaceSelected = this.handleWorkspaceSelected.bind(this);
         this.handleCompanySelected = this.handleCompanySelected.bind(this);
@@ -57,14 +57,14 @@ class TeamsConfigTabInner extends React.Component {
                     contentUrl: host + "/home/?theme={theme}&loginHint={loginHint}&entityId={entityId}"
                         + "&suppliername=" + this.state.selectedSupplier.name
                         + "&supplierid=" + this.state.selectedSupplier.id
-                        + "&buyername=" + this.state.selectedBuyer.name
-                        + "&buyerid=" + this.state.selectedBuyer.id
+                        + "&buyergroupname=" + this.state.selectedBuyerGroup.name
+                        + "&buyergroupid=" + this.state.selectedBuyerGroup.id
                         + "&companyname=" + this.state.selectedCompany.name
                         + "&companycode=" + this.state.selectedCompany.companycode
                     ,
                     suggestedDisplayName: this.state.tabDetails.name,
                     supplier: this.state.selectedSupplier,
-                    buyer:this.state.selectedBuyer
+                    buyerGroup: this.state.selectedBuyerGroup
                 });
                 saveEvent.notifySuccess();
             });
@@ -117,7 +117,7 @@ class TeamsConfigTabInner extends React.Component {
     componentDidUpdate() {
        
         if (inTeams()) {
-            if (this.state.selectedBuyer.id
+            if (this.state.selectedBuyerGroup.id
                 && this.state.selectedSupplier.id
                 && this.state.selectedCompany.companycode
                 && this.state.tabDetails.id) {
@@ -134,13 +134,13 @@ class TeamsConfigTabInner extends React.Component {
         }
     }
 
-    handleBuyerSelected(e, buyer) {
-        if (buyer !== this.state.selectedBuyer) {
+    handleBuyerGroupSelected(e, buyerGroup) {
+        if (buyerGroup !== this.state.selectedBuyerGroup) {
             this.setState(
                 {
-                    selectedBuyer: {
-                        name: buyer.name ? buyer.name : buyer.id,
-                        id: buyer.id
+                    selectedBuyerGroup: {
+                        name: buyerGroup.name ? buyerGroup.name : buyerGroup.id,
+                        id: buyerGroup.id
                     }
                 });
         }
@@ -223,7 +223,7 @@ class TeamsConfigTabInner extends React.Component {
                         />
                     </span>
                     <CompanyDropDown onClick={this.handleCompanySelected} company={this.state.selectedCompany} />
-                    <BuyerDropDown onClick={this.handleBuyerSelected} buyer={this.state.selectedBuyer} />
+                    <BuyerGroupDropDown onClick={this.handleBuyerGroupSelected} buyerGroup={this.state.selectedBuyerGroup} />
                     <SupplierDropDown onClick={this.handleSupplierSelected} supplier={this.state.selectedSupplier} />
 
                 </PanelBody>

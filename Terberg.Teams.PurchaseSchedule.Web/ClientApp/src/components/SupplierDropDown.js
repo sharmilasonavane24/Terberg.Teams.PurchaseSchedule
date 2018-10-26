@@ -13,7 +13,7 @@ class SupplierDropDownInner extends React.Component {
     render() {
         return (
             <div>
-                <span>{this.props.loading ? 'Loading Suppliers...' : 'Suppliers'}</span>
+                <span>{this.props.loading ? 'Loading Suppliers...' : 'Supplier'}</span>
                 <Dropdown
                     autoFocus
                     mainButtonText={this.props.supplier.id ?

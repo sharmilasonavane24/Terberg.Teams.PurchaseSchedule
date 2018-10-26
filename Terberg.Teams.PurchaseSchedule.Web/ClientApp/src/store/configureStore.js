@@ -1,7 +1,7 @@
 ﻿import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
-import * as Buyer from './Buyer';
+import * as BuyerGroup from './BuyerGroup';
 import * as Supplier from './Supplier';
 import * as Workspace from './Workspace';
 import * as Company from './Company';
@@ -9,7 +9,7 @@ import * as Report from './Report';
 
 export default function configureStore(history, initialState) {
   const reducers = {
-      buyers: Buyer.reducer,
+      buyerGroups: BuyerGroup.reducer,
       suppliers: Supplier.reducer,
       workspaces: Workspace.reducer,
       companies: Company.reducer,

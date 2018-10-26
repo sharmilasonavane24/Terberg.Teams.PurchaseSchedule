@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Terberg.Teams.PurchaseSchedule.Web.Helpers
 {
-    public interface IBuyer
+    public interface IBuyerGroup
     {
-        Task<IEnumerable<Buyer>> GetBuyers();
+        Task<IEnumerable<BuyerGroup>> GetBuyerGroups();
     }
 }

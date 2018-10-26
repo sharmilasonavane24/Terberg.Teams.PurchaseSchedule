@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store/Report';
 import { inTeams, getQueryVariable } from '../Utils';
+import FilterBox from './FilterBox';
 import microsoftTeams from '@microsoft/teams-js';
-import { Toggle, IconButton, connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
-import { MSTeamsIconWeight, MSTeamsIconType } from 'msteams-ui-icons-react';
+import { Toggle,   connectTeamsComponent, PrimaryButton, PanelBody, Panel } from 'msteams-ui-components-react';
 import './Home.css';
 
 
@@ -13,7 +13,7 @@ class HomeInner extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: false,
+            isHidden: false,
             isPurchaseOrder: true,
             isPlannedOrder: true,
             isForecastSale: true,
@@ -27,13 +27,13 @@ class HomeInner extends React.Component {
                 name: getQueryVariable('suppliername'),
                 id: getQueryVariable('supplierid')
             },
-            selectedBuyer: {
-                name: getQueryVariable('buyername'),
-                id: getQueryVariable('buyerid')
+            selectedBuyerGroup: {
+                name: getQueryVariable('buyergroupname'),
+                id: getQueryVariable('buyergroupid')
             },
         };
         this.handleApplyClick = this.handleApplyClick.bind(this);
-        this.handleShowClick = this.handleShowClick.bind(this);
+        this.handleIconClick = this.handleIconClick.bind(this);
         this.handlePurchaseOrderToggle = this.handlePurchaseOrderToggle.bind(this);
         this.handlePlannedOrderToggle = this.handlePlannedOrderToggle.bind(this);
         this.handleForecastSaleToggle = this.handleForecastSaleToggle.bind(this);
@@ -55,23 +55,18 @@ class HomeInner extends React.Component {
     updateDimensions() {
         this.setState({ innerHeight: window.innerHeight });
     }
-    handleShowClick() {
+    handleIconClick() {
+         
         this.setState({
-            show: !this.state.show
+            isHidden: !this.state.isHidden
         });
     }
     handleApplyClick() {
-        console.log(this.state.selectedCompany.companycode);
-        console.log(this.state.selectedSupplier.id);
-        console.log(this.state.selectedBuyer.id);
-        console.log(this.state.isPurchaseOrder);
-        console.log(this.state.isPlannedOrder);
-        console.log(this.state.isForecastSale);
-        console.log(this.state.isForecastLongTerm);
+     
         this.props.requestReports(
             this.state.selectedCompany.companycode,
             this.state.selectedSupplier.id,
-            this.state.selectedBuyer.id,
+            this.state.selectedBuyerGroup.id,
             this.state.isPurchaseOrder,
             this.state.isPlannedOrder,
             this.state.isForecastSale,
@@ -113,20 +108,10 @@ class HomeInner extends React.Component {
 
                 <PanelBody>
                     <div className="top-container">
-                        <div>
-                            <IconButton
-                                iconWeight={MSTeamsIconWeight.Regular}
-                                onClick={this.handleShowClick}
-                                iconType={this.state.show ? MSTeamsIconType.ChevronUp : MSTeamsIconType.ChevronDown}
-                            />
-                            <IconButton
-                                iconWeight={MSTeamsIconWeight.Regular}
-                                onClick={this.handleShowClick}
-                                iconType={this.state.show ? MSTeamsIconType.ChevronUp : MSTeamsIconType.ChevronDown}
-                                className="icon-show" />
-                        </div>
+                      
+                        <FilterBox onClick={this.handleIconClick} isHidden={this.state.isHidden} />
 
-                        <div className={this.state.show ? 'hidden' : ''}>
+                        <div className={this.state.isHidden ? 'hidden' : ''}>
                             <div className="row">
                                 <div className="column">
                                     <table>
@@ -137,9 +122,9 @@ class HomeInner extends React.Component {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style={styles.header}>Buyer Name: </td>
+                                            <td style={styles.header}>Buyer Group Name: </td>
                                             <td>
-                                                {this.state.selectedBuyer.name}
+                                                {this.state.selectedBuyerGroup.name}
                                             </td>
                                         </tr>
                                     </table>
@@ -174,8 +159,7 @@ class HomeInner extends React.Component {
                                     </table>
                                 </div>
                                 <div className="column">
-                                    <PrimaryButton>Send</PrimaryButton>
-                                    <br /> <br />
+                                  
                                     <PrimaryButton onClick={this.handleApplyClick}>Apply</PrimaryButton>
                                 </div>
                             </div>

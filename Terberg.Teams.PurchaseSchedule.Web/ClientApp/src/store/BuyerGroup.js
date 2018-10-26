@@ -1,19 +1,18 @@
-﻿const requestBuyersType = 'REQUEST_BUYERS';
-const receiveBuyersType = 'RECEIVE_BUYERS';
-const requestBuyersError = 'REQUEST_BUYERS_ERROR';
+﻿const requestBuyerGroupsType = 'REQUEST_BUYERGROUPS';
+const receiveBuyerGroupsType = 'RECEIVE_BUYERGROUPS';
+const requestBuyerGroupsError = 'REQUEST_BUYERGROUPS_ERROR';
 
 const initialState = {
-    buyers: [],
-    buyerId: '',
+    buyerGroups: [],
     isLoading: false,
     isError: false,
     errorMessage: ''
 };
 
 export const actionCreators = {
-    requestBuyers: () => async (dispatch) => {
-        dispatch({ type: requestBuyersType });
-        const url = "api/purchaseschedule/buyers";
+    requestBuyerGroups: () => async (dispatch) => {
+        dispatch({ type: requestBuyerGroupsType });
+        const url = "api/purchaseschedule/buyergroups";
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -22,27 +21,27 @@ export const actionCreators = {
             if (response.ok) {
                 response.json()
                     .then(result => {
-                        dispatch({ type: receiveBuyersType, result });
+                        dispatch({ type: receiveBuyerGroupsType, result });
                     })
                     .catch((err) => {
-                        var errorMessage = "No buyer found. " + err.message
-                        dispatch({ type: requestBuyersError, errorMessage });
+                        var errorMessage = "No buyer group found. " + err.message
+                        dispatch({ type: requestBuyerGroupsError, errorMessage });
                     });
             } else {
                 response.json()
                     .then(result => {
                         var errorMessage = result.message;
-                        dispatch({ type: requestBuyersError, errorMessage });
+                        dispatch({ type: requestBuyerGroupsError, errorMessage });
                     })
                     .catch(err => {
-                        var errorMessage = "No buyer found. " + err.message
-                        dispatch({ type: requestBuyersError, errorMessage });
+                        var errorMessage = "No buyer group found. " + err.message
+                        dispatch({ type: requestBuyerGroupsError, errorMessage });
                     });
             }
         }
         catch (err) {
-            var errorMessage = "No buyer found. " + err.message
-            dispatch({ type: requestBuyersError, errorMessage });
+            var errorMessage = "No buyer group found. " + err.message
+            dispatch({ type: requestBuyerGroupsError, errorMessage });
         }
     }
 };
@@ -51,22 +50,22 @@ export const reducer = (state, action) => {
     state = state || initialState;
 
     switch (action.type) {
-        case requestBuyersType:
+        case requestBuyerGroupsType:
             return {
                 ...state,
                 isLoading: true,
                 isError: false
             };
 
-        case receiveBuyersType:
+        case receiveBuyerGroupsType:
             return {
                 ...state,
-                buyers: action.result,
+                buyerGroups: action.result,
                 isLoading: false,
                 isError: false
             };
 
-        case requestBuyersError:
+        case requestBuyerGroupsError:
             return {
                 ...state,
                 errorMessage: action.errorMessage,

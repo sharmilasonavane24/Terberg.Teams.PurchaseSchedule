@@ -29,7 +29,7 @@ namespace Terberg.Teams.PurchaseSchedule.Web
             });
             services.AddTransient<ISupplier, Supplier_Dev>();
             services.AddTransient<ICompany, Company_Dev>();
-            services.AddTransient<IBuyer, Buyer_Dev>();
+            services.AddTransient<IBuyerGroup, BuyerGroup_Dev>();
             services.AddTransient<IReport, Report_dev>();
         }
 
